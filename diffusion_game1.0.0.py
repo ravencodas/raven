@@ -4,6 +4,18 @@ import networkx as nx
 import random
 import colorsys
 
+#adicionar arestas "maleáveis" com plasticidade para que possam de desconectar 
+
+'''
+Modelos de plasticidade:
+
+1 - plasticidade Hebbiana contínua
+dEij/dt = n(wi*wj - \lambda Eij)
+
+
+'''
+
+
 # Inicializa pygame
 pygame.init()
 width, height = 1200, 900
@@ -11,11 +23,15 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Brincar de Deus")
 clock = pygame.time.Clock()
 
-# Parâmetros físicos
+
+#======================= Parâmetros físicos ===========================================
 C = 0.1        # constante de difusão
 dt = 0.1
 noise_amp = 50  # intensidade dos estímulos
-num_nodes = 15
+num_nodes = 30
+#=======================================================================================
+
+
 
 # Cria rede aleatória
 G = nx.erdos_renyi_graph(num_nodes, 0.2)
@@ -213,6 +229,22 @@ while running:
             print(f"Estímulo automático: nó {node_idx} recebeu {stimulus:.2f}")
             auto_pilot_timer = 0
 
+
+
+
+#======================================= O SISTEMA FÍSICO, onde o filho chora e a mãe também ================================================================================
+
+
+    #adicionar o estímulo direcionado, onde um clique com o mouse sobre um nó gera um estímulo; com a memória por Hopfield puder ser implementada, uma sequência padronizada de estímulos pode ser lembrada pela rede e resultar sempre
+    # nos mesmos padrões de difusão entre os nós.
+    #a plasticidade minhoca = adicionar a energia da rede de Hopfields
+    # E = -\sum{ij}^{arestas} [w_ij * x_i * x_j]
+    # x são os valores do parâmetro físico (o estímulo)
+
+
+
+
+ 
     # Difusão
     dw = -C * (L @ w)
     w += dw * dt
@@ -224,5 +256,8 @@ while running:
     draw_graph(w)
     pygame.display.flip()
     clock.tick(60)
+
+
+ #=================================================================================================================================   
 
 pygame.quit()
