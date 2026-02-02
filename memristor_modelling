@@ -1,0 +1,241 @@
+* ============================================================================
+* Memristor Crossbar Memory Array 5x4
+* Author: LTspice Assistant
+* Date: 2024
+* Description: Non-volatile memory crossbar with simple memristor model
+* ============================================================================
+
+* ============================================================================
+* SIMPLE MEMRISTOR MODEL (A10)
+* ============================================================================
+* Modified memristor model based on TEAM model simplification
+* Pinout: 1=Anode, 2=Cathode, 3=Control Voltage, 4=State Monitor (optional)
+*
+.subckt A10 1 2 3 4 PARAMS: Roff=100k Ron=1k Vt=0.5 Vp=0.5 alpha=1 beta=1
+*
+* TEAM Model Equations
+* dx/dt = k * (i(t) - i_off) * f_off(x) for 0 < i_off < i
+* dx/dt = k * (i(t) - i_on) * f_on(x) for i < i_on < 0
+*
+* Internal state variable (x) represents memristance
+Bx 4 0 V=V(x)  ; State monitor output
+*
+* Window function (simplified Joglekar)
+.func foff(x) = {1 - (2*x-1)^(2*p)}
+.func fon(x) = {1 - (2*x-1)^(2*p)}
+.param p=10    ; Window function steepness
+.param k=1e4   ; Speed factor
+*
+* Current through memristor
+Gmem 1 2 VALUE={V(1,2)/V(4)}  ; I = V / R, where R = state variable
+*
+* State variable update
+Cx x 0 1p IC={Roff}  ; Initial state = high resistance
+*
+* State differential equation
+Bdx x 0 V={ 
++ if(V(1,2) > Vp && V(x) > Ron, 
++    -k * (V(1,2)/V(x) - Vp/Ron) * foff(V(x)/(Roff-Ron)), 
++  if(V(1,2) < -Vt && V(x) < Roff,
++    -k * (V(1,2)/V(x) + Vt/Roff) * fon(V(x)/(Roff-Ron)),
++    0))
++ }
+*
+* Parasitic capacitance
+Cpara 1 2 1f
+*
+* Protection diodes (optional)
+D1 1 2 DMOD
+D2 2 1 DMOD
+*
+.ends A10
+
+* Diode model for protection
+.model DMOD D(Is=1e-14 Rs=10)
+
+* ============================================================================
+* CROSSBAR DEFINITION
+* ============================================================================
+* 5 Word Lines (Rows) - Horizontal
+* 4 Bit Lines (Columns) - Vertical
+* Total: 20 memristor cells (5x4 array)
+*
+* Word Line Nodes: WL1, WL2, WL3, WL4, WL5
+* Bit Line Nodes: BL1, BL2, BL3, BL4
+*
+
+* ============================================================================
+* MEMRISTOR CELLS AT EACH CROSSPOINT
+* ============================================================================
+* Format: XM[row][col] WL[row] BL[col] 0 StateMonitor[row][col] A10
+* Pinout: (Anode, Cathode, Control, StateMonitor)
+
+* Row 1
+XM11 WL1 BL1 0 SM11 A10
+XM12 WL1 BL2 0 SM12 A10
+XM13 WL1 BL3 0 SM13 A10
+XM14 WL1 BL4 0 SM14 A10
+
+* Row 2
+XM21 WL2 BL1 0 SM21 A10
+XM22 WL2 BL2 0 SM22 A10
+XM23 WL2 BL3 0 SM23 A10
+XM24 WL2 BL4 0 SM24 A10
+
+* Row 3
+XM31 WL3 BL1 0 SM31 A10
+XM32 WL3 BL2 0 SM32 A10
+XM33 WL3 BL3 0 SM33 A10
+XM34 WL3 BL4 0 SM34 A10
+
+* Row 4
+XM41 WL4 BL1 0 SM41 A10
+XM42 WL4 BL2 0 SM42 A10
+XM43 WL4 BL3 0 SM43 A10
+XM44 WL4 BL4 0 SM44 A10
+
+* Row 5
+XM51 WL5 BL1 0 SM51 A10
+XM52 WL5 BL2 0 SM52 A10
+XM53 WL5 BL3 0 SM53 A10
+XM54 WL5 BL4 0 SM54 A10
+
+* ============================================================================
+* WORD LINE DRIVERS (Rows)
+* ============================================================================
+* Voltage sources for selecting rows during write/read operations
+*
+V_WL1 WL1 0 PULSE(0 0.8 0 1n 1n 9u 20u)  ; Row 1 select pulse
+V_WL2 WL2 0 PULSE(0 0.8 5u 1n 1n 9u 20u) ; Row 2 select pulse
+V_WL3 WL3 0 PULSE(0 0.8 10u 1n 1n 9u 20u) ; Row 3 select pulse
+V_WL4 WL4 0 PULSE(0 0.8 15u 1n 1n 9u 20u) ; Row 4 select pulse
+V_WL5 WL5 0 PULSE(0 0.8 20u 1n 1n 9u 20u) ; Row 5 select pulse
+
+* ============================================================================
+* BIT LINE DRIVERS/SENSORS (Columns)
+* ============================================================================
+* Current-limited voltage sources for write operations
+* Sensing resistors for read operations
+*
+
+* Column 1 - Programming and sensing
+V_BL1_prog PROG1 0 PWL(0 0 1u 0 1.1u 0.5 10u 0.5 10.1u 0)
+R_BL1_sense BL1 PROG1 1k  ; Current sense resistor
+C_BL1 BL1 0 10p           ; Bit line capacitance
+
+* Column 2
+V_BL2_prog PROG2 0 PWL(0 0 6u 0 6.1u -0.5 15u -0.5 15.1u 0)
+R_BL2_sense BL2 PROG2 1k
+C_BL2 BL2 0 10p
+
+* Column 3 - READ operation example
+V_BL3_read BL3 0 PWL(0 0 11u 0.1 19u 0.1 19.1u 0)  ; Small read voltage
+R_BL3_sense BL3 0 1k  ; Read current sense
+
+* Column 4 - HOLD operation (floating)
+R_BL4_pull BL4 0 1M   ; High impedance when not selected
+C_BL4 BL4 0 10p
+
+* ============================================================================
+* SELECTION TRANSISTORS (Example - optional)
+* ============================================================================
+* Uncomment to add transistor-based selection
+*Qsel1 WL1 SEL_ROW 0 0 NPN
+*Qsel2 WL2 SEL_ROW 0 0 NPN
+*V_sel SEL_ROW 0 PULSE(0 1.2 0 1n 1n 100u 200u)
+
+* ============================================================================
+* OPERATION SEQUENCE
+* ============================================================================
+* Timeline:
+* 0-5us:   Initialization
+* 5-10us:  Write '1' to cell (2,1) - SET operation
+* 10-15us: Write '0' to cell (2,2) - RESET operation
+* 15-20us: Read cell (3,3)
+* 20-25us: Write pattern to multiple cells
+*
+
+* Additional test patterns
+V_test1 TEST1 0 PWL(
++  0 0
++  25u 0
++  25.1u 0.6
++  30u 0.6
++  30.1u 0
++  100u 0)
+
+V_test2 TEST2 0 PWL(
++  0 0
++  35u 0
++  35.1u -0.6
++  40u -0.6
++  40.1u 0
++  100u 0)
+
+* ============================================================================
+* LOAD RESISTORS & PARASITICS
+* ============================================================================
+* Line resistances (typical for nanowires)
+R_WL1 WL1 WL1_int 10
+R_WL2 WL2 WL2_int 10
+R_WL3 WL3 WL3_int 10
+R_WL4 WL4 WL4_int 10
+R_WL5 WL5 WL5_int 10
+
+R_BL1 BL1 BL1_int 10
+R_BL2 BL2 BL2_int 10
+R_BL3 BL3 BL3_int 10
+R_BL4 BL4 BL4_int 10
+
+* ============================================================================
+* MONITORING & MEASUREMENT
+* ============================================================================
+* Current sensors for each bit line
+E_I_BL1 I_BL1 0 VALUE={I(R_BL1_sense)*1000}  ; Current in uA
+E_I_BL2 I_BL2 0 VALUE={I(R_BL2_sense)*1000}
+E_I_BL3 I_BL3 0 VALUE={I(R_BL3_sense)*1000}
+E_I_BL4 I_BL4 0 VALUE={I(R_BL4_pull)*1000}
+
+* State monitor outputs
+R_SM11 SM11 0 1G
+R_SM12 SM12 0 1G
+R_SM21 SM21 0 1G
+R_SM22 SM22 0 1G
+R_SM33 SM33 0 1G
+
+* ============================================================================
+* ANALYSIS COMMANDS
+* ============================================================================
+.tran 0 50u 0 1n  ; Transient analysis
+.option plotwinsize=0
+.option numdgt=10
+.option method=gear  ; Better for memristor convergence
+
+* Initial conditions - all memristors in HRS (High Resistance State)
+.nodeset V(SM11)=100k V(SM12)=100k V(SM13)=100k V(SM14)=100k
+.nodeset V(SM21)=100k V(SM22)=100k V(SM23)=100k V(SM24)=100k
+.nodeset V(SM31)=100k V(SM32)=100k V(SM33)=100k V(SM34)=100k
+.nodeset V(SM41)=100k V(SM42)=100k V(SM43)=100k V(SM44)=100k
+.nodeset V(SM51)=100k V(SM52)=100k V(SM53)=100k V(SM54)=100k
+
+* Measurements
+.measure TRAN Ron1 FIND V(SM11) AT=30u  ; Resistance after SET
+.measure TRAN Roff1 FIND V(SM22) AT=35u ; Resistance after RESET
+.measure TRAN Iread FIND I(R_BL3_sense) AT=18u  ; Read current
+
+* ============================================================================
+* SIMULATION CONTROL
+* ============================================================================
+.control
+run
+* Plot key signals
+plot V(WL1) V(WL2) V(WL3) V(WL4) V(WL5) title="Word Line Voltages"
+plot V(BL1) V(BL2) V(BL3) V(BL4) title="Bit Line Voltages"
+plot V(I_BL1) V(I_BL2) V(I_BL3) title="Bit Line Currents (uA)"
+plot V(SM11) V(SM21) V(SM33) title="Memristor States (Resistance)"
+.endc
+
+* ============================================================================
+* END OF CIRCUIT
+* ============================================================================
+.end
