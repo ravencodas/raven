@@ -1,4 +1,5 @@
-#> 20/02/26
+#> 20/02/26x
+#> versão raven1.0.0 pré testes
 #>tarefas: adicionar funções de geração de gráfico para análise de dados
 #> adicionar geração de estímulos
 #> adicionar motor gráfico com python
