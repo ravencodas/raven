@@ -1,11 +1,4 @@
-* ============================================================================
-* Memristor Crossbar Memory Array 5x4
-* Author: LTspice Assistant
-* Date: 2024
-* Description: Non-volatile memory crossbar with simple memristor model
-* ============================================================================
 
-* ============================================================================
 * SIMPLE MEMRISTOR MODEL (A10)
 * ============================================================================
 * Modified memristor model based on TEAM model simplification
