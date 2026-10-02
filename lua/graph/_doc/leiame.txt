@@ -1,0 +1,4 @@
+objetivo do programa: construção de grafos baseados em latência e jitter de uma rede.
+espécie de radar de rede.
+Modelo matemático utilizado: Método de Kuramoto Adaptativo com Pesos.
+Consultar pesquisa teórica na biblioteca virtual no drive.

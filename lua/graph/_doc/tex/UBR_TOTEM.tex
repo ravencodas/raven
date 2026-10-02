@@ -1,0 +1,408 @@
+\documentclass[12pt,a4paper]{article}
+
+% =========================================================
+% PACOTES
+% =========================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{tcolorbox}
+\usepackage{mathptmx}
+
+
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+% =========================================================
+% ESTILO TERMINAL / CÓDIGO
+% =========================================================
+
+\usepackage{listings}
+
+\definecolor{terminalbg}{RGB}{12,12,12}
+\definecolor{terminalgreen}{RGB}{0,255,120}
+\definecolor{terminalframe}{RGB}{0,180,90}
+
+\lstdefinestyle{ravenstyle}{
+    backgroundcolor=\color{terminalbg},
+    basicstyle=\ttfamily\small\color{terminalgreen},
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{terminalframe},
+    framesep=8pt,
+    tabsize=4,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{terminalgreen},
+    keywordstyle=\color{green},
+    commentstyle=\color{terminalgreen},
+    stringstyle=\color{terminalgreen},
+    xleftmargin=10pt,
+    xrightmargin=10pt,
+    keepspaces=true
+}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\pagestyle{fancy}
+
+\fancyhf{}
+
+\fancyhead[L]{Projeto Raven / UBR Totem}
+\fancyhead[R]{Documentação Técnica}
+\fancyfoot[C]{\thepage}
+
+% =========================================================
+% TÍTULO
+% =========================================================
+
+\title{
+    \Huge \textbf{DOCUMENTAÇÃO TÉCNICA}\\[0.4cm]
+    \Large Unidade Básica RAVEN (Rede Adaptativa de Variáveis em Estado Não-linear) "TOTEM"
+}
+
+\author{
+    Vicenzo "Codas" Minossi
+}
+
+\date{\today}
+
+% =========================================================
+% DOCUMENTO
+% =========================================================
+
+\begin{document}
+
+\maketitle
+
+\vspace{1cm}
+
+\tableofcontents
+
+\newpage
+
+% =========================================================
+% IDENTIFICAÇÃO
+% =========================================================
+
+\section{Identificação do Operador}
+
+\subsection{Dados Gerais}
+
+\begin{itemize}
+
+    \item Nome do Operador: Vicenzo Soares Minossi
+    \item Instituição: PROCERGS - Centro de Tecnologia da Informação e Comunicação do Estado do Rio Grande do Sul S.A
+    \item Setor: Divisão Redes e Segurança/Engenharia de Rede
+    \item Projeto Associado: RAVEN (Rede Adaptativa de Variáveis em Estado Não-linear)]
+    \item Item de Projeto: UBR (Unidade Básica RAVEN)
+    \item Variante: "TOTEM"
+    \item Versão do Projeto: 1.0
+    \item Competência: 2026
+    \item Ambiente Operacional: Virtual/Físico
+    \item Sistema Operacional: Windows/Linux
+
+\end{itemize}
+
+\vspace{0.5cm}
+
+% =========================================================
+% RESUMO / ABSTRACT
+% =========================================================
+
+\begin{tcolorbox}[
+    colback=white,
+    colframe=black,
+    width=\textwidth,
+    arc=2mm,
+    boxrule=0.5pt
+]
+
+{\small
+\setstretch{1.1}
+
+\section*{\centering Resumo}
+
+\noindent
+\textit{
+Memorial técnico-científico de dispositivo que interpreta dinamicamente o comportamento de redes de computadores através de microestruturas físicas que formam macroestruturas lógicas discretizadas cujo comportamento pode ser analisado por modelos de grafos; uma arquitetura computacional física, adaptativa e inspirada em redes neurais capaz de executar funções clássicas de gerenciamento e decisão de tráfego em rede.
+}
+
+\vspace{0.7cm}
+
+\section*{\centering Abstract}
+
+\noindent
+\textit{
+Technical-scientific memorial of a device capable of dynamically interpreting the behavior of computer networks through physical microstructures that form discretized logical macrostructures whose behavior can be analyzed through graph models; a physical, adaptive, and neural-network-inspired computational architecture capable of executing classical traffic management and network routing decision functions.
+}
+
+}
+
+\end{tcolorbox}
+
+\vspace{1cm}
+\newpage
+% =========================================================
+% QUADRO TEÓRICO
+% =========================================================
+
+\section{Quadro Teórico}
+
+\subsection{Fundamentação}
+
+Descrever:
+
+\begin{itemize}
+
+    \item Teoria dos Grafos
+    \item Teoria Eletromagnética
+    \item Sistemas Dinâmicos
+    \item Teoria de Circuitos
+    \item Redes de Computadores
+    \item Redes Neurais
+    \item Escala de modelos de aprendizados de máquina (deep learning e machine learning)
+    \item Métodos Computacionais da Física: Cálculo Numérico, Análise de Estabilidade de Método
+
+
+
+
+\end{itemize}
+
+\vspace{0.5cm}
+
+\subsection{Metodologia}
+
+Descrever:
+\begin{itemize}
+
+    \item Descrição do comportamento clássico de roteadores em uma rede [DPT]
+    \item Estatística de tráfego [DPT]
+    \item Métricas de funcionamento[DPT]
+    \item Conclusão
+    \item Hipótese [DPT]%um algorítimo físico é capaz de gerenciar corretamente uma rede?
+    \item Modelo de rede neural proposto [DPT]
+    \item Métricas de funcionamento [DPT]
+    \item Correlação de métricas: Modelo Clássico vs Modelo Adaptativo
+    \item Análise de estabilidade [DPT]
+    \item Conclusão [DPT]
+    \item Modelo de hardware [DPER]
+    \item Aplicações práticas [DPER]
+
+\end{itemize}
+
+% =========================================================
+% PSEUDOCÓDIGO
+% =========================================================
+\section{Introdução}
+\subsection{Leonhard Euler: As Sete Pontes de Königsberg}
+
+
+\section{O Comportamento Clássico de una Rede}
+\subsection{A era }
+\subsection{Introdução à Redes de Computadores}
+
+
+\section{Funções Clássicas Fundamentais}
+\subsection{Encaminhamento}
+\subsection{Descoberta de Topologia}
+\subsection{Controle de Fluxo}
+\subsection{Segurança}
+\subsection{Redundância e Adaptação}\
+\subsection{Controle e Telemetria}
+
+\section{Teoria das Redes}
+\subsection{A Teoria dos Grafos}
+\subsection{Descrição de uma Rede Clássica}
+\subsection{Métricas de funcionamento}
+
+\section{Sistemas Dinâmicos}
+\subsection{Sistemas não-lineares}
+\subsection{Emergência de Computação}
+
+
+
+
+
+
+\subsection{Estrutura Lógica}
+
+\begin{lstlisting}[style=ravenstyle, language=Python]
+
+
+\end{lstlisting}
+
+% =========================================================
+% CÓDIGO-FONTE
+% =========================================================
+
+\section{Código-Fonte}
+
+\subsection{Inicialização do Sistema}
+
+\begin{lstlisting}[style=ravenstyle, language=Python]
+
+
+
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\subsection{Renderização do Grafo}
+
+\begin{lstlisting}[style=ravenstyle, language=Python]
+
+
+
+\end{lstlisting}
+
+% =========================================================
+% IDE E BIBLIOTECAS
+% =========================================================
+
+\section{Ambiente de Desenvolvimento}
+
+\subsection{IDE Utilizada}
+
+\begin{itemize}
+
+    \item Visual Studio Code
+    \item PyCharm
+    \item Jupyter Notebook
+
+\end{itemize}
+
+\vspace{0.5cm}
+
+\subsection{Bibliotecas e Módulos}
+
+\begin{itemize}
+
+    \item Python
+    \item NetworkX
+    \item Matplotlib
+    \item Tkinter
+    \item PyVis
+    \item JSON
+    \item NumPy
+
+\end{itemize}
+
+\vspace{0.5cm}
+
+\subsection{Créditos das Ferramentas}
+
+\begin{itemize}
+
+    \item Python Software Foundation
+    \item NetworkX Developers
+    \item Matplotlib Development Team
+    \item PyVis Developers
+    \item Open Source Community
+
+\end{itemize}
+
+% =========================================================
+% TESTES E RESULTADOS
+% =========================================================
+
+\section{Resultados Experimentais}
+
+\subsection{Comportamento Observado}
+
+Inserir:
+\begin{itemize}
+
+    \item Logs
+    \item Capturas de tela
+    \item Métricas
+    \item Grafos gerados
+    \item Comportamento emergente
+
+\end{itemize}
+
+\vspace{0.5cm}
+
+\subsection{Problemas Encontrados}
+
+Descrever:
+\begin{itemize}
+
+    \item Gargalos
+    \item Bugs
+    \item Saturações
+    \item Limitações arquiteturais
+
+\end{itemize}
+
+% =========================================================
+% CONCLUSÃO
+% =========================================================
+
+\section{Conclusão}
+
+Descrever:
+\begin{itemize}
+
+    \item Eficiência do sistema
+    \item Aplicabilidade prática
+    \item Melhorias futuras
+    \item Escalabilidade
+    \item Potencial de produção
+
+\end{itemize}
+
+% =========================================================
+% BIBLIOGRAFIA
+% =========================================================
+
+\section{Bibliografia}
+
+\begin{thebibliography}{99}
+
+\bibitem{graph}
+Diestel, Reinhard.
+\textit{Graph Theory}.
+Springer.
+
+\bibitem{networks}
+Barabási, Albert-László.
+\textit{Network Science}.
+Cambridge University Press.
+
+\bibitem{cyber}
+Norbert Wiener.
+\textit{Cybernetics}.
+MIT Press.
+
+\bibitem{python}
+Python Software Foundation.
+\textit{Python Documentation}.
+
+\bibitem{networkx}
+NetworkX Developers.
+\textit{NetworkX Documentation}.
+
+\end{thebibliography}
+
+% =========================================================
+% FIM
+% =========================================================
+
+\end{document}
